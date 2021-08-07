@@ -6,28 +6,39 @@ import (
 	"os"
 
 	"github.com/ideaspaper/go_todo_app/controllers"
+	"github.com/ideaspaper/go_todo_app/services"
+	"github.com/ideaspaper/go_todo_app/views"
 )
 
 func main() {
-	if _, err := os.Stat("todo_list.json"); os.IsNotExist(err) {
-		fmt.Println("file todo_list.json does not exist")
-		fmt.Println("creating todo_list.json")
+	fileName := "todo_list.json"
+	if _, err := os.Stat(fileName); os.IsNotExist(err) {
+		fmt.Printf("file %v does not exist\n", fileName)
+		fmt.Printf("creating %v\n", fileName)
 		os.WriteFile("todo_list.json", []byte("[]"), 0666)
-		fmt.Println("file todo_list.json created successfully")
+		fmt.Printf("file %v created successfully\n", fileName)
 	}
+
+	todoService, err := services.NewTodoService(fileName)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	todoController := controllers.NewTodoController(todoService, views.NewTodoView())
 
 	if len(os.Args) < 2 {
 		fmt.Println(errors.New("wrong commands/options"))
-		controllers.Help()
+		todoController.Help()
 		os.Exit(1)
 	}
 
 	command := os.Args[1]
 
 	if command == "help" {
-		controllers.Help()
+		todoController.Help()
 	} else if command == "list" {
-		controllers.List()
+		todoController.List()
 	} else {
 		if len(os.Args) < 3 {
 			fmt.Println(errors.New("wrong commands/options, see help"))
@@ -36,21 +47,21 @@ func main() {
 		switch command {
 		case "add":
 			options := os.Args[2:]
-			controllers.Add(options[0])
+			todoController.Add(options[0])
 		case "findById":
 			options := os.Args[2:]
-			controllers.FindById(options[0])
+			todoController.FindById(options[0])
 		case "delete":
 			options := os.Args[2:]
-			controllers.Delete(options[0])
+			todoController.Delete(options[0])
 		case "complete":
 			options := os.Args[2:]
-			controllers.Complete(options[0])
+			todoController.Complete(options[0])
 		case "uncomplete":
 			options := os.Args[2:]
-			controllers.Uncomplete(options[0])
+			todoController.Uncomplete(options[0])
 		default:
-			controllers.Help()
+			todoController.Help()
 		}
 	}
 }
