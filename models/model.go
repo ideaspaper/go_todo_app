@@ -41,8 +41,7 @@ func changeStatus(id string, status bool) (Todo, error) {
 	if err != nil {
 		return Todo{}, err
 	}
-	var todos []Todo
-	todos, err = List()
+	todos, err := List()
 	if err != nil {
 		return Todo{}, err
 	}
@@ -69,8 +68,7 @@ func List() ([]Todo, error) {
 	}
 	todos := []Todo{}
 	for _, v := range todoJson {
-		var newTodo *Todo
-		newTodo, err = NewTodo(v.Id, v.Task, v.Added, v.Status)
+		newTodo, err := NewTodo(v.Id, v.Task, v.Added, v.Status)
 		if err != nil {
 			return nil, err
 		}
@@ -102,8 +100,7 @@ func FindById(id string) (Todo, error) {
 	if err != nil {
 		return Todo{}, err
 	}
-	var todos []Todo
-	todos, err = List()
+	todos, err := List()
 	if err != nil {
 		return Todo{}, err
 	}
@@ -119,8 +116,7 @@ func Delete(id string) (Todo, error) {
 	if err != nil {
 		return Todo{}, err
 	}
-	var todos []Todo
-	todos, err = List()
+	todos, err := List()
 	if err != nil {
 		return Todo{}, err
 	}
