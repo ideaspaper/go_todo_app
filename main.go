@@ -9,6 +9,13 @@ import (
 )
 
 func main() {
+	if _, err := os.Stat("todo_list.json"); os.IsNotExist(err) {
+		fmt.Println("file todo_list.json does not exist")
+		fmt.Println("creating todo_list.json")
+		os.WriteFile("todo_list.json", []byte("[]"), 0666)
+		fmt.Println("file todo_list.json created successfully")
+	}
+
 	if len(os.Args) < 2 {
 		fmt.Println(errors.New("wrong commands/options"))
 		controllers.Help()
