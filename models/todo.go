@@ -9,11 +9,11 @@ type Todo struct {
 	status bool
 }
 
-func (t *Todo) GetId() int {
+func (t *Todo) Id() int {
 	return t.id
 }
 
-func (t *Todo) GetTask() string {
+func (t *Todo) Task() string {
 	return t.task
 }
 
@@ -21,11 +21,11 @@ func (t *Todo) SetTask(task string) {
 	t.task = task
 }
 
-func (t *Todo) GetAdded() time.Time {
+func (t *Todo) Added() time.Time {
 	return t.added
 }
 
-func (t *Todo) GetStatus() bool {
+func (t *Todo) Status() bool {
 	return t.status
 }
 

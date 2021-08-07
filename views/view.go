@@ -27,36 +27,36 @@ func List(data []models.Todo) {
 	} else {
 		for _, v := range data {
 			complete := "[ ]"
-			if v.GetStatus() {
+			if v.Status() {
 				complete = "[x]"
 			}
-			fmt.Printf("%v. %v %v [Added: %v]\n", v.GetId(), complete, v.GetTask(), v.GetAdded().Format(time.RFC822))
+			fmt.Printf("%v. %v %v [Added: %v]\n", v.Id(), complete, v.Task(), v.Added().Format(time.RFC822))
 		}
 	}
 }
 
 func Add(newTodo models.Todo) {
-	fmt.Printf("%v has been added successfully\n", newTodo.GetTask())
+	fmt.Printf("%v has been added successfully\n", newTodo.Task())
 }
 
 func FindById(foundTodo models.Todo) {
 	complete := "[ ]"
-	if foundTodo.GetStatus() {
+	if foundTodo.Status() {
 		complete = "[x]"
 	}
-	fmt.Printf("%v. %v %v [Added: %v]\n", foundTodo.GetId(), complete, foundTodo.GetTask(), foundTodo.GetAdded())
+	fmt.Printf("%v. %v %v [Added: %v]\n", foundTodo.Id(), complete, foundTodo.Task(), foundTodo.Added())
 }
 
 func Delete(deletedTodo models.Todo) {
-	fmt.Printf("[%v. %v] has been deleted successfully\n", deletedTodo.GetId(), deletedTodo.GetTask())
+	fmt.Printf("[%v. %v] has been deleted successfully\n", deletedTodo.Id(), deletedTodo.Task())
 }
 
 func Complete(completedTodo models.Todo) {
-	fmt.Printf("[%v. %v] has been marked as complete\n", completedTodo.GetId(), completedTodo.GetTask())
+	fmt.Printf("[%v. %v] has been marked as complete\n", completedTodo.Id(), completedTodo.Task())
 }
 
 func Uncomplete(completedTodo models.Todo) {
-	fmt.Printf("[%v. %v] has been marked as uncomplete\n", completedTodo.GetId(), completedTodo.GetTask())
+	fmt.Printf("[%v. %v] has been marked as uncomplete\n", completedTodo.Id(), completedTodo.Task())
 }
 
 func DisplayError(err error) {
