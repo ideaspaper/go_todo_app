@@ -9,13 +9,13 @@ type TodoJson struct {
 	Status bool
 }
 
-func NewTodoJson(id int, task string, added string, status bool) (*TodoJson, error) {
+func NewTodoJson(id int, task string, added string, status bool) *TodoJson {
 	return &TodoJson{
 		Id:     id,
 		Task:   task,
 		Added:  added,
 		Status: status,
-	}, nil
+	}
 }
 
 type Todo struct {

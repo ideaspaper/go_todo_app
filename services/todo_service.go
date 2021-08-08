@@ -29,12 +29,12 @@ func NewTodoService(fileName string) (ITodoService, error) {
 	if err != nil {
 		return nil, err
 	}
-	todoJson := []entities.TodoJson{}
-	if err = json.Unmarshal(v, &todoJson); err != nil {
+	todosJson := []entities.TodoJson{}
+	if err = json.Unmarshal(v, &todosJson); err != nil {
 		return nil, err
 	}
 	todos := []entities.Todo{}
-	for _, v := range todoJson {
+	for _, v := range todosJson {
 		newTodo, err := entities.NewTodo(v.Id, v.Task, v.Added, v.Status)
 		if err != nil {
 			return nil, err
@@ -146,10 +146,7 @@ func (ts *todoService) Uncomplete(id string) (entities.Todo, error) {
 func (ts *todoService) Save() error {
 	todosJson := []entities.TodoJson{}
 	for _, v := range ts.todos {
-		newTodoJson, err := entities.NewTodoJson(v.Id(), v.Task(), v.Added().Format(time.RFC3339), v.Status())
-		if err != nil {
-			return err
-		}
+		newTodoJson := entities.NewTodoJson(v.Id(), v.Task(), v.Added().Format(time.RFC3339), v.Status())
 		todosJson = append(todosJson, *newTodoJson)
 	}
 	toWrite, _ := json.MarshalIndent(todosJson, "", "  ")
