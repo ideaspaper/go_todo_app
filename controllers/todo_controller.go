@@ -1,18 +1,19 @@
 package controllers
 
 import (
-	"github.com/ideaspaper/go_todo_app/services"
-	"github.com/ideaspaper/go_todo_app/views"
+	"github.com/ideaspaper/puttask/services"
+	"github.com/ideaspaper/puttask/views"
 )
 
 type ITodoController interface {
 	Help()
-	List()
-	Add(string)
-	FindById(string)
-	Delete(string)
-	Complete(string)
-	Uncomplete(string)
+	List(sortFlag *string)
+	Add(*string)
+	FindById(*int)
+	FindByTask(*string)
+	Delete(*int)
+	Complete(*int)
+	Uncomplete(*int)
 }
 
 type todoController struct {
@@ -31,8 +32,8 @@ func (tc *todoController) Help() {
 	tc.todoView.Help()
 }
 
-func (tc *todoController) List() {
-	todos, err := tc.todoService.List()
+func (tc *todoController) List(sortFlag *string) {
+	todos, err := tc.todoService.List(sortFlag)
 	if err != nil {
 		tc.todoView.DisplayError(err)
 	} else {
@@ -40,7 +41,7 @@ func (tc *todoController) List() {
 	}
 }
 
-func (tc *todoController) Add(newTask string) {
+func (tc *todoController) Add(newTask *string) {
 	todo, err := tc.todoService.Add(newTask)
 	if err != nil {
 		tc.todoView.DisplayError(err)
@@ -49,7 +50,7 @@ func (tc *todoController) Add(newTask string) {
 	}
 }
 
-func (tc *todoController) FindById(id string) {
+func (tc *todoController) FindById(id *int) {
 	todo, err := tc.todoService.FindById(id)
 	if err != nil {
 		tc.todoView.DisplayError(err)
@@ -58,7 +59,12 @@ func (tc *todoController) FindById(id string) {
 	}
 }
 
-func (tc *todoController) Delete(id string) {
+func (tc *todoController) FindByTask(task *string) {
+	todos := tc.todoService.FindByTask(task)
+	tc.todoView.FindByTask(todos)
+}
+
+func (tc *todoController) Delete(id *int) {
 	todo, err := tc.todoService.Delete(id)
 	if err != nil {
 		tc.todoView.DisplayError(err)
@@ -67,7 +73,7 @@ func (tc *todoController) Delete(id string) {
 	}
 }
 
-func (tc *todoController) Complete(id string) {
+func (tc *todoController) Complete(id *int) {
 	todo, err := tc.todoService.Complete(id)
 	if err != nil {
 		tc.todoView.DisplayError(err)
@@ -76,7 +82,7 @@ func (tc *todoController) Complete(id string) {
 	}
 }
 
-func (tc *todoController) Uncomplete(id string) {
+func (tc *todoController) Uncomplete(id *int) {
 	todo, err := tc.todoService.Uncomplete(id)
 	if err != nil {
 		tc.todoView.DisplayError(err)

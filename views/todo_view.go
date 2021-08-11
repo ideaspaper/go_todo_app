@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ideaspaper/go_todo_app/entities"
+	"github.com/ideaspaper/puttask/entities"
 )
 
 type ITodoView interface {
@@ -12,6 +12,7 @@ type ITodoView interface {
 	List([]entities.Todo)
 	Add(entities.Todo)
 	FindById(entities.Todo)
+	FindByTask([]entities.Todo)
 	Delete(entities.Todo)
 	Complete(entities.Todo)
 	Uncomplete(entities.Todo)
@@ -40,20 +41,20 @@ func (tv *todoView) Help() {
 
 func (tv *todoView) List(todos []entities.Todo) {
 	if len(todos) == 0 {
-		fmt.Printf("Nothing to do, use add command to create a task\n")
+		fmt.Printf("nothing to do, use add command to create a task\n")
 	} else {
 		for _, v := range todos {
 			complete := "[ ]"
 			if v.Status() {
 				complete = "[x]"
 			}
-			fmt.Printf("%v. %v %v [Added: %v]\n", v.Id(), complete, v.Task(), v.Added().Format(time.RFC822))
+			fmt.Printf("%03d. %v %v [added: %v]\n", v.Id(), complete, v.Task(), v.Added().Format(time.RFC822))
 		}
 	}
 }
 
 func (tv *todoView) Add(newTodo entities.Todo) {
-	fmt.Printf("[%v. %v] has been added successfully\n", newTodo.Id(), newTodo.Task())
+	fmt.Printf("[%03d. %v] has been added successfully\n", newTodo.Id(), newTodo.Task())
 }
 
 func (tv *todoView) FindById(foundTodo entities.Todo) {
@@ -61,19 +62,33 @@ func (tv *todoView) FindById(foundTodo entities.Todo) {
 	if foundTodo.Status() {
 		complete = "[x]"
 	}
-	fmt.Printf("%v. %v %v [Added: %v]\n", foundTodo.Id(), complete, foundTodo.Task(), foundTodo.Added())
+	fmt.Printf("%03d. %v %v [added: %v]\n", foundTodo.Id(), complete, foundTodo.Task(), foundTodo.Added())
+}
+
+func (tv *todoView) FindByTask(foundTodos []entities.Todo) {
+	if len(foundTodos) == 0 {
+		fmt.Printf("no record found\n")
+	} else {
+		for _, v := range foundTodos {
+			complete := "[ ]"
+			if v.Status() {
+				complete = "[x]"
+			}
+			fmt.Printf("%03d. %v %v [added: %v]\n", v.Id(), complete, v.Task(), v.Added().Format(time.RFC822))
+		}
+	}
 }
 
 func (tv *todoView) Delete(deletedTodo entities.Todo) {
-	fmt.Printf("[%v. %v] has been deleted successfully\n", deletedTodo.Id(), deletedTodo.Task())
+	fmt.Printf("[%03d. %v] has been deleted successfully\n", deletedTodo.Id(), deletedTodo.Task())
 }
 
 func (tv *todoView) Complete(completedTodo entities.Todo) {
-	fmt.Printf("[%v. %v] has been marked as complete\n", completedTodo.Id(), completedTodo.Task())
+	fmt.Printf("[%03d. %v] has been marked as complete\n", completedTodo.Id(), completedTodo.Task())
 }
 
 func (tv *todoView) Uncomplete(uncompletedTodo entities.Todo) {
-	fmt.Printf("[%v. %v] has been marked as uncomplete\n", uncompletedTodo.Id(), uncompletedTodo.Task())
+	fmt.Printf("[%03d. %v] has been marked as uncomplete\n", uncompletedTodo.Id(), uncompletedTodo.Task())
 }
 
 func (tv *todoView) DisplayError(err error) {
