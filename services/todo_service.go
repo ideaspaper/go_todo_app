@@ -68,7 +68,7 @@ func (ts *todoService) List(sortFlag *string) ([]entities.Todo, error) {
 		sort.Slice(ts.todos, func(i, j int) bool {
 			return ts.todos[i].Id() > ts.todos[j].Id()
 		})
-		sort.Slice(ts.todos, func(i, _ int) bool {
+		sort.SliceStable(ts.todos, func(i, _ int) bool {
 			return !ts.todos[i].Status()
 		})
 	}
